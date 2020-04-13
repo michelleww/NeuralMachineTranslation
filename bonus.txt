@@ -1,0 +1,43 @@
+In this assignment, I choose to implement another three models for decoder with attention.
+
+Reference:
+Use these two websites as the tutorial for the new decoders.
+    https://towardsdatascience.com/sequence-2-sequence-model-with-attention-mechanism-9e9ca2a613a
+    https://blog.floydhub.com/attention-mechanism/
+    
+The three models are the decoder with general Luong attention, dot Luong attention and concat Luong attention.
+The Luong Attention decoder is using the structure of the decoder with attention. But they have the different scoring mechanism and the Luong attention needs extra log_softmax step.
+Normally the Luong Attention decoder supports different attention methodx, but since it's inheriting the attention decoder, we do not initialize the method. So I seperate it into  General Luong decoder, the dot Luong decoder and the concat luong decoder.
+
+By adding opts in the a2_run.py, we will be able to run those decoders with arguments.
+By runnng the four decoders on the same minibatch data, we get these results:(ie. no concat result as it's getting nan values after performing the nn.linear steps, might be the precision issue as the sum of hidden layers are really small in this data set):
+
+Decoder without attention:
+Epoch 1: loss=2.8155847499447484, BLEU=0.03364146681766097
+Epoch 2: loss=2.4359272013428392, BLEU=0.03703256479201595
+Epoch 3: loss=2.2322704119067036, BLEU=0.18890963285786996
+Epoch 4: loss=2.0626776173550594, BLEU=0.1858558013390951
+Epoch 5: loss=1.9600175401215911, BLEU=0.17576169965081903
+
+Decoder with attention:
+Epoch 1: loss=2.786582967927379, BLEU=0.03619256632881747
+Epoch 2: loss=2.4051769093800615, BLEU=0.14146321192166744
+Epoch 3: loss=2.1999054230669493, BLEU=0.19741030202598198
+Epoch 4: loss=2.0496015189796366, BLEU=0.23909952101999818
+Epoch 5: loss=1.9329451184759858, BLEU=0.2588381444362321
+
+Decoder with general Luong Attention:
+Epoch 1: loss=3.153160531674662, BLEU=0.0396444101023718
+Epoch 2: loss=2.4465154447863178, BLEU=0.24504402642433532
+Epoch 3: loss=2.2111686775761266, BLEU=0.2269442838859879
+Epoch 4: loss=2.045537657314731, BLEU=0.26020245324073205
+Epoch 5: loss=1.9078848329923486, BLEU=0.27530812622278095
+
+Decoder with dot Luong Attention:
+Epoch 1: loss=2.95360456743548, BLEU=0.13186492663971514
+Epoch 2: loss=2.3827733077028745, BLEU=0.22368373219244764
+Epoch 3: loss=2.1501247882843018, BLEU=0.30115217517666304
+Epoch 4: loss=1.981550064138187, BLEU=0.2851378998959152
+Epoch 5: loss=1.831635046389795, BLEU=0.2880266410456819
+
+So we can see that these three decoder with attentions all perform better than the decoder without attention on the same data set. And the decoders with Luong attention are perform better than the basic one. 

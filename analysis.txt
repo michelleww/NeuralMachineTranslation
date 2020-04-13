@@ -1,0 +1,35 @@
+The command that has been used to produced the result: python3.7 a2_run.py train $TRAIN vocab.e.gz vocab.f.gz train.txt.gz dev.txt.gz model_wo_att.pt.gz --device cuda ie. training the decoder without attention:
+Epoch 1: loss=3.347558485508995, BLEU=0.24008526079502085
+Epoch 2: loss=2.414399751233402, BLEU=0.26840055329505025
+Epoch 3: loss=1.9565427541046196, BLEU=0.2799294578742068
+Epoch 4: loss=1.61535756162296, BLEU=0.2904684836482458
+Epoch 5: loss=1.35653339080711, BLEU=0.29415986121695203
+
+Based on this observation, we can see that as more Epoch has been done, the loss is decreasing and the BLEU is increasing which means after learning, the BLEU has been improved.
+
+After running ' python3.7 a2_run.py train $TRAIN vocab.e.gz vocab.f.gz train.txt.gz dev.txt.gz model_w_att.pt.gz --with-attention --device cuda' ie. training the decoder with attention:
+Epoch 1: loss=3.104424299568989, BLEU=0.28493450874354787
+Epoch 2: loss=2.086226790049164, BLEU=0.30851064402613865
+Epoch 3: loss=1.6269131462036748, BLEU=0.3182165618955189
+Epoch 4: loss=1.3059406896732624, BLEU=0.32504367897031
+Epoch 5: loss=1.0775278984127155, BLEU=0.32639084684612724
+
+Based on the observation about the attention decoder comparing to the decode without attention, we found that the result for the decoder with attention is better than the result from the decoder without attention. After 5 epochs, the loss in the decoder with attention is smaller than the loss in in the decoder without attention, and the BLEU is higher. Even though higher BLEU is not necessarily meaning better performance, by looking at the loss, we can still see that the decoder with attention performs better.
+
+However, by using the 'tqdm', we were able to see how long it takes to run each epoch. In my machine, it took more times for the decoder with attention. So there might be some trade offs between accuracy and efficiency as the decoder with attention requires more computations.
+
+After running 'python3.7 a2_run.py test $TEST vocab.e.gz vocab.f.gz model_wo_att.pt.gz --device cuda' ie. testing the decoder without attention:
+The average BLEU score over the test set was 0.327354085444161
+
+After running 'python3.7 a2_run.py test $TEST vocab.e.gz vocab.f.gz model_w_att.pt.gz --with-attention --device cuda' ie. testing the decoder with attention:
+The average BLEU score over the test set was 0.3636577770014955
+
+By comparing the trainning result with the testing result for both models(with attention and without attention), we can see that the training BLEU is better than the testing result for both models. Combining with the fact of high loss and low BLEU score, the modesl might be underfitting.
+
+
+
+
+
+
+
+
